@@ -61,10 +61,10 @@ stakeholder yet, and I certainly can't ask an agent to work on their
 behalf.
 
 **Claims.** The promises each stakeholder is relying on, written concretely
-enough that I could falsify them. Not "the CLI should be reliable" —
-*`stop` always leaves the working tree on the base branch*. Not "the code
-should be maintainable" — *every public type in `ir.rs` has a
-`cache_line` field*. A claim you can't falsify isn't a promise; it's a
+enough that I could falsify them. Not "the CLI should be reliable" — but
+`stop` always leaves the working tree on the base branch. Not "the code
+should be maintainable" — but every public type in `ir.rs` has a
+`cache_line` field. A claim you can't falsify isn't a promise; it's a
 mood. The real ones are load-bearing: if they break, a stakeholder leaves.
 
 Claims are the part of "values" that an adversarial test can poke at. I
