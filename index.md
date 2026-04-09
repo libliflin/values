@@ -37,6 +37,14 @@ decided in other rooms. My question is smaller: what do you hand an agent
 each cycle so it can push the project in a direction the owner would
 recognize as progress, without drowning it in documentation?
 
+This also isn't an argument against specs in general. Specs remain the
+right tool whenever you need a document you can cite in a review:
+regulated industries, audited interfaces, cross-team contracts that have
+to survive personnel changes. The manifesto isn't a replacement for any
+of that. It's about the daily work of pushing a scoped project forward,
+where no external audit is coming and the real cost is documentation
+overhead slowing the agent down.
+
 The short answer is that you need much less than you'd think, and it
 needs to be in a different shape than you'd expect.
 
@@ -84,9 +92,14 @@ of what success looks like for them. They also have a reason they'd walk
 away. That last one is the one I most often forget to write down. If I
 can't name it, I'm not ready to ask an agent to act on her behalf.
 
+Personas aren't a new idea. What's different here is that the stakeholder
+prose isn't an introduction that precedes the real document. It is the
+document. There's no hidden spec behind it that the prose is summarizing.
+The stakeholders, the claims, and this week's theme are all the agent
+gets, and they have to be load-bearing on their own.
+
 **Claims.** The promises each stakeholder is relying on, written concretely
-enough that something can actively try to break them. A claim isn't a
-claim if nothing is attacking it. A promise nobody is attacking is a wish.
+enough that something can actively try to break them.
 
 Good claims look like: `stop` always leaves the working tree on the base
 branch. Every public type in `ir.rs` has a `cache_line` field. Something
@@ -94,14 +107,20 @@ where I can write an adversarial test that asks whether the promise is
 still holding and get back a yes or a no. "The CLI should be reliable"
 fails that bar. It's a mood dressed up as a promise.
 
-The adversarial part is load-bearing and non-negotiable. If you write
-claims down but nothing in your loop is periodically trying to falsify
-them, you don't have claims. You have sincerely-held beliefs, which is
-the category the original specs were in. The whole point of a claim is
-to be the kind of statement that something else is actively trying to
-break, on a schedule, as part of normal work. Otherwise the claim drifts
-the same way the spec did and for the same reason: nothing is keeping it
-honest.
+The falsification loop is the load-bearing part. If you write claims down
+but nothing is periodically trying to break them, you don't have claims.
+You have sincerely-held beliefs, which is the category the original specs
+were in. A claim without that loop around it will drift the same way a
+spec drifts, for the same reason: nothing is keeping it honest.
+
+You might notice that the falsification suite is itself a kind of spec,
+a specification of the claims that must hold. That's true, and worth
+sitting with. The important difference is that it runs. A drifted test
+script fails loudly, which forces either a fix or a conscious decision
+to update the claim. A drifted human-facing spec is silent, and silence
+is the enemy here. The reason to prefer executable claims over written
+ones isn't that one is a spec and the other isn't. It's that one breaks
+loudly and the other lies quietly.
 
 I find I don't really know what I value until I try to write a test that
 would prove I've stopped valuing it.
@@ -117,16 +136,31 @@ Between those three, there's usually enough context for the agent to
 figure out what to do next, and enough for it to notice when it was
 wrong about what to do next.
 
-## Judgment is the thing
+## Judgment is the bet
 
 The word I want is *judgment*. The ability to read a situation and pick a
 reasonable next move. Specs were invented to avoid needing it: the whole
 point of a spec was to move judgment out of the reader's hands and into
 the writer's, because the reader couldn't be trusted with it.
 
-The reader can be trusted with it now. Which means the tradeoff is
-upside-down. The writer's job now is to provide the frame the reader
-needs in order to decide well.
+This is where spec-cage believers and I part ways, and I want to be
+honest about what I'm claiming. The claim is that the current generation
+of coding agents can exercise judgment on an existing, scoped project
+well enough that providing a frame beats providing a cage. That's an
+empirical claim about 2026, not a philosophical one about agents in
+principle. If you've been burned by older agents that needed spec cages
+to produce anything coherent, the burn was real, and caging them was the
+right call at the time. What I'm saying is that for this narrow job,
+pushing an existing project forward one day at a time, the cage now
+costs more than it saves.
+
+The cheapest way to check is to take the spec away from one of your
+agents, hand it the stakeholder prose, the claims, and a theme, and
+watch what happens for a week. That's how I figured it out. A week of
+honest trial will tell you whether the claim holds on your project.
+
+If it does, the writer's job is to provide the frame the reader needs in
+order to decide well.
 
 ## This is a daily practice
 
@@ -135,8 +169,8 @@ question "what meaningful improvement can I make right now?" You show up,
 you make today's version a little better, you commit, you go home.
 
 This is local gradient by design. The agent walks one project forward,
-one step at a time, under direction from a human who is steering. This
-frame is for patient, aligned collaborators pushing an existing project
+one step at a time, under direction from a human who is steering. The
+method is for patient, aligned collaborators pushing an existing project
 forward. A blank-page architect needs a different tool, and that tool is
 not this one.
 
@@ -157,8 +191,9 @@ you ship.
 Every few cycles you look back over the recent work and ask which
 stakeholder has been getting all the attention, and which one has been
 quietly neglected. The owner reads those retros and decides whether the
-tool is earning its keep. That's the feedback loop. It lives outside the
-system, held by the human whose project it is.
+tool is earning its keep. That's the feedback loop, and it lives outside
+the system, held by the human whose project it is. Nothing in this method
+tries to self-grade. The grading is the owner's job and stays that way.
 
 The agent's input is the frame, the current state, and the question:
 *which stakeholder's day can I make noticeably better right now?*
