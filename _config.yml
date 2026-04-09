@@ -1,0 +1,23 @@
+title: values
+description: A manifesto on value-driven development.
+author: William Laffin
+
+remote_theme: riggraz/no-style-please
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-feed
+
+permalink: /:title
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
