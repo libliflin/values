@@ -11,14 +11,17 @@ title: values
 
 ## The thesis
 
-I've stopped writing specs for my agents.
+I write specs for a living. Requirements docs, design docs, tickets, the
+whole kit. For a human team they mostly work, and I don't see myself
+putting down the pen anytime soon.
 
-The specs were usually fine, honestly. The problem was that the work kept
-producing things that were technically correct and quietly wrong. The way
-a new hire's first PR can be correct and quietly wrong: they followed the
-instructions, and nobody told them what the instructions were *for*.
+What I've started to notice is that when the reader is an agent, the work
+comes back technically correct and quietly wrong. The way a new hire's
+first PR can be correct and quietly wrong: they followed the instructions,
+and nobody told them what the instructions were *for*.
 
-After a while I started to suspect the spec was the wrong artifact.
+After a while I started to suspect the spec was the wrong artifact to be
+handing an agent in the first place.
 
 ## What a spec actually is
 
