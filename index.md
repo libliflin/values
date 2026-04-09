@@ -11,100 +11,124 @@ title: values
 
 ## The thesis
 
-Agents are smart enough now that we should not be giving them specs.
+I've stopped writing specs for my agents.
 
-We should be giving them **stakeholders**, **claims**, and **themes** — and
-they can figure out the rest.
+Not because the specs were bad. They were usually fine. But the work kept
+producing things that were technically correct and quietly wrong — the way
+a new hire's first PR can be correct and quietly wrong, because they
+followed the instructions and nobody had told them what the instructions
+were *for*.
 
-I call this **value-driven development**.
+After a while I started to suspect the spec was the wrong artifact.
 
-## Why specs are the wrong artifact
+## What a spec actually is
 
-A spec is a frozen answer to a question that is still being asked. It
-encodes a plan from a moment before the work started, before anyone knew
-what the work was going to teach them. When the work teaches you something,
-the spec becomes a lie you have to maintain.
+A spec is a frozen answer to a question that is still being asked. You
+write it before the work starts, which is the moment you know the least
+about the work. Then the work teaches you something — it always does —
+and now you have two problems: the thing you learned, and the spec that
+disagrees with it.
 
-Worse, specs flatten judgment into instructions. They answer "what should I
-do" but not "who am I doing this for, and what did I promise them." An
-agent following a spec can execute every line perfectly and still produce
-something that misses the point — because the point was never written down.
-The point was in the author's head, and the spec was the shadow it cast on
-the wall.
+You can update the spec. Most of us don't. The spec drifts, the code
+moves, and the document that was supposed to align everyone becomes the
+document nobody trusts.
 
-Agents capable of judgment deserve better inputs than shadows.
+An agent working from a drifted spec will follow it anyway. That is the
+part I keep getting wrong. The agent is not going to notice that the spec
+is a lie; the agent is going to notice that the spec is clear. Clarity
+beats correctness when the reader has no other frame.
 
-## What to give them instead
+So the problem isn't spec quality. It's that a spec, by itself, doesn't
+carry the thing I actually need the agent to carry: *why any of this
+matters, and to whom*.
 
-**Stakeholders.** The actual people the project serves — not "developers"
-or "users" in the abstract, but *which kind, doing what*. CLI users running
-a command under deadline. Library consumers wiring us into their build.
-Operators holding the pager at 3am. Contributors opening the repo for the
-first time. Each one has a first encounter, a notion of success, and a
-reason they would walk away.
+## What I'd rather give them
 
-**Claims.** The load-bearing promises each stakeholder relies on. Claims
-are concrete enough to falsify: *`lathe stop` always leaves the working
-tree on the base branch.* *Every public type in `ir.rs` has a
-`cache_line: CacheLine` field.* If a claim breaks, a stakeholder leaves.
-Claims are the part of "values" that an adversarial test suite can poke at
-until it finds blood.
+Three things, in roughly this order.
 
-**Themes.** A session-level purpose that biases the agent's attention
-without overriding the stakeholder framework. *Get the CLI working
-end-to-end.* *Stop bleeding contributors on the onboarding path.* A theme
-says *where to focus this week*; the stakeholders say *who you're focusing
-for*.
+**Stakeholders.** Not "users" in the abstract. The specific people the
+project serves, named concretely enough that I can picture one of them
+having a bad morning. The operator who gets paged at 3am and needs the
+error message to tell her something useful. The contributor opening the
+repo for the first time on a Sunday afternoon, deciding in ninety seconds
+whether this project is worth her weekend. The downstream team that wired
+us into their build last quarter and now depends on a behavior we never
+wrote down.
 
-Given those three, a capable agent can generate the spec itself — and,
-more importantly, can notice cycle by cycle when the spec it just generated
-is wrong.
+Each stakeholder has a first encounter, a notion of success, and a reason
+they would walk away. If I can't name those, I don't understand the
+stakeholder yet, and I certainly can't ask an agent to work on their
+behalf.
 
-## The loop
+**Claims.** The promises each stakeholder is relying on, written concretely
+enough that I could falsify them. Not "the CLI should be reliable" —
+*`stop` always leaves the working tree on the base branch*. Not "the code
+should be maintainable" — *every public type in `ir.rs` has a
+`cache_line` field*. A claim you can't falsify isn't a promise; it's a
+mood. The real ones are load-bearing: if they break, a stakeholder leaves.
 
-Value-driven development is not a document you write once. It's a loop:
+Claims are the part of "values" that an adversarial test can poke at. I
+find I don't really know what I value until I try to write a test that
+would prove I've stopped valuing it.
 
-1. **Identify who the project serves.** Read the code. Find the real
-   stakeholders, the tensions between them, the claims each one depends on.
-2. **Encode what they need.** Write it down in prose the agent will read
-   every cycle — not as a checklist, as a frame.
-3. **Work in cycles.** Each cycle, the agent picks the one change that
-   most improves some stakeholder's journey, makes it, and writes a
-   changelog naming *who benefits and how*.
-4. **Falsify the claims.** Regularly, stop building and try to break the
-   promises. A claim that can't be falsified isn't load-bearing — it's
-   decoration.
-5. **Look back.** Every few cycles, read the recent changelogs together.
-   Which stakeholder has been getting all the attention? Which one has
-   been quietly neglected? Adjust.
+**Themes.** The thing I'm trying to accomplish this week. Not a
+priority — priorities come from the stakeholders — but a direction.
+*Get the CLI working end-to-end.* *Stop bleeding contributors on the
+onboarding path.* A theme biases attention. It answers "where, within
+everything that matters, should we be spending today?"
 
-The agent doesn't need a Gantt chart. It needs the frame, the snapshot,
-and the question: *which stakeholder's journey can I make noticeably
-better right now?*
+Stakeholders say who. Claims say what was promised. Themes say where to
+look next. Between the three of them there is usually enough context for
+a capable reader to generate the right spec — and, more usefully, to
+notice when the spec they just generated is wrong.
 
-## Lathe
+## Judgment is the thing
 
-[Lathe](https://github.com/libliflin/lathe) is the concrete implementation
-of this idea. It's the loop above, made executable.
+The reason this works now and didn't work five years ago is that the
+reader is different. You could not hand this kind of frame to a 2020
+autocomplete and expect a coherent PR. You can hand it to a 2026 agent
+and get one.
 
-`lathe init` reads a project and writes `agent.md`, `claims.md`, and a
-`falsify.sh` — the stakeholder map, the load-bearing claims, and the
-adversarial suite that tests them. `lathe start` runs the cycle: snapshot,
-pick, implement, validate, commit, merge, repeat. Every fourth cycle is a
-red team against the claims. Every fifth is a retro across the recent
-changelogs.
+That's not a claim about intelligence. It's a claim about *judgment*:
+the ability to read a situation, weigh competing concerns, and pick a
+reasonable next move. Judgment is what specs were invented to avoid
+needing — the whole point of a spec was to remove judgment from the
+reader and put it in the writer. That tradeoff made sense when the
+reader couldn't be trusted with it.
 
-The whole thing is built on the bet that if you get the stakeholders and
-the claims right, you don't need to tell the agent what to do next.
+The reader can be trusted with it now. Which means the tradeoff is
+upside-down. The writer's job isn't to pre-decide — the writer's job is
+to provide the frame the reader needs in order to decide well.
 
-## This site
+## What the loop looks like
 
-This repository is a manifesto meant to be read by AI agents — and, when
-they ask why, pointed to.
+In practice, value-driven development is not a document. It's a rhythm.
 
-It exists because I kept trying to align my agents through scattered
-CLAUDE.md fragments, and the fragments were the wrong shape. They were
-fine for mechanical rules and bad at conveying the frame. The frame needs
-prose.
+You start by reading the project hard enough to figure out who it
+actually serves and what you've promised them. You write that down. You
+work in small cycles, and each cycle the agent picks the one change that
+most improves some specific stakeholder's life, and writes down who
+benefited and how. Periodically you stop building and try to break the
+promises on purpose — an adversarial pass, looking for the claim that
+was secretly decorative. Periodically you look back over the last few
+cycles and ask which stakeholder has been getting all the attention and
+which one you've been quietly neglecting.
 
-So: prose.
+The agent doesn't need a roadmap. It needs the frame, the current state,
+and the question: *which stakeholder's day can I make noticeably better
+right now?*
+
+That's the whole idea.
+
+## A concrete implementation
+
+I've been building a tool called [lathe](https://github.com/libliflin/lathe)
+that tries to operationalize this. It reads a project, writes down the
+stakeholders and claims, runs the cycle, and runs an adversarial pass
+against its own claims every few cycles. It's early, and it's wrong in
+ways I haven't found yet, and that's why the manifesto came first — I
+wanted the idea to be legible on its own, without having to defend a
+particular implementation of it.
+
+If you want to see the idea with code attached, lathe is where to look.
+If you want to argue with the idea itself, this page is the better place.
