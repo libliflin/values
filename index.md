@@ -212,4 +212,8 @@ idea to be legible on its own, before having to defend any particular
 implementation of it.
 
 If you want to see the idea with code attached, that's what lathe is for.
-This page is the better place to argue with the idea itself.
+If you want to argue with the idea itself, the
+[issues on this repo](https://github.com/libliflin/values/issues) are
+where to do it. Open one. Tell me where the manifesto is wrong, which
+objection I failed to preempt, or which part bounced you off. I'd rather
+find out in writing than six months from now in production.
