@@ -91,14 +91,11 @@ adversarial pass against the builder's work — did it actually meet the
 goal? What could break? — and the builder and verifier loop until the
 verifier says the goal has been sufficiently met. CI gates every step.
 
-Every few cycles you look back and ask which stakeholder has been
-getting all the attention, and which one has been quietly neglected. The
-owner reads those retros and decides whether the tool is earning its
-keep. That feedback loop lives outside the system, held by the human
-whose project it is. Nothing in this method tries to self-grade.
-
-The agent's input is the frame, the current state, and the question:
-*which stakeholder's day can I make noticeably better right now?*
+The goal-setter reads its own recent history each cycle — what it
+worked on, which stakeholders benefited — so it can notice when one
+stakeholder has been getting all the attention and another has been
+quietly neglected. The balance is built into the loop, not bolted on
+after the fact.
 
 ## Try it
 
