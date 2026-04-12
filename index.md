@@ -15,16 +15,17 @@ I write specs for a living. Requirements docs, design docs, tickets, the
 whole kit. For a human team they mostly work, and I don't see myself
 putting down the pen anytime soon.
 
-What I've started to notice is that when the reader is an agent pushing
-an existing project forward, the documents I've been writing don't
-translate. I hand over a clean ticket and a link to three CLAUDE.md files
-and an architecture sketch, and the work comes back technically correct
-and quietly wrong. The way a new hire's first PR can be correct and
-quietly wrong: they followed the instructions, and nobody told them what
-the instructions were *for*.
+What I've started to notice is that when the reader is an agent, my specs
+answer the wrong question. I'm writing down *how* to build the thing,
+step by step, and the agent is already good at that part. Give it a
+codebase and a goal and it will figure out the implementation. That's
+what agents do now. Millions of people prove it every day with tools like
+Bolt, Lovable, and Cursor: you describe what you want, not how to build
+it, and the system derives the rest.
 
-After a while I started to suspect the problem lived in document shape,
-not document quality.
+The question the agent can't answer on its own is *why any of this
+matters, and to whom*. That's the part my documents have been leaving
+out, because specs were never designed to carry it.
 
 ## What this is for
 
@@ -35,46 +36,44 @@ Big questions like microservices versus monolith, which market to target,
 or whether to build this thing at all, all belong to the owner. They get
 decided in other rooms. My question is smaller: what do you hand an agent
 each cycle so it can push the project in a direction the owner would
-recognize as progress, without drowning it in documentation?
+recognize as progress?
 
-This also isn't an argument against specs in general. Specs remain the
-right tool whenever you need a document you can cite in a review:
-regulated industries, audited interfaces, cross-team contracts that have
-to survive personnel changes. The manifesto isn't a replacement for any
-of that. It's about the daily work of pushing a scoped project forward,
-where no external audit is coming and the real cost is documentation
-overhead slowing the agent down.
+This isn't an argument against specs. Specs remain the right tool
+whenever you need a document you can cite in a review: regulated
+industries, audited interfaces, cross-team contracts that have to
+survive personnel changes. What I'm saying is that for the daily work of
+pushing a scoped project forward, the spec is operating at a level the
+agent no longer needs help with. You're writing implementation details
+for a reader that's better at implementation details than you are.
 
-The short answer is that you need much less than you'd think, and it
-needs to be in a different shape than you'd expect.
+The short answer is that you need much less than you'd think, and what
+you need is at a higher altitude than you'd expect.
 
 ## What a spec actually is
 
-A spec is a frozen answer to a question that is still being asked. You
-write it before the work starts, which is the moment you know the least
-about the work. Then the work teaches you something, as it always does,
-and now you have two problems: the thing you learned, and the spec that
-disagrees with it.
+A spec answers the question "how should this be built?" It decomposes a
+goal into steps, names the components, specifies the interfaces.
+That decomposition used to be the hard part. It isn't anymore.
 
-You can update the spec. Most of us don't. The spec drifts, the code
-moves, and the document that was supposed to align everyone becomes the
-document nobody trusts.
+Hand an agent a codebase and the sentence "add runtime bounds checking
+for array indexing" and it will read the IR, find the indexed-access
+instructions, figure out where to thread the length through, emit the
+guard, write the tests, and document the ambiguities it found along the
+way. You didn't need to tell it which file to edit or which instruction
+to emit. It derived all of that from the goal and the code.
 
-A human reader catches that drift. They push back on stale parts, they
-ask clarifying questions, they mentally skip the sentences that don't
-make sense anymore. An agent reads every sentence as authoritative text
-and runs with it. To an agent, a clear spec looks trustworthy regardless
-of whether it still corresponds to reality. Clarity beats correctness
-when the reader has no other frame.
+The spec was supposed to save the reader from having to figure that out.
+The reader can figure it out now. So the spec is answering a question
+nobody is asking anymore, and in the meantime, the question nobody is
+answering, who does this serve and what are we trying to protect, goes
+unwritten.
 
-And scattering five clean specs across a repo doesn't solve the problem.
-It makes it worse. Now you have five drifted documents to satisfy at
-once, and the agent will dutifully try to satisfy all of them. The
-documentation overload people complain about when working with agents
-isn't a volume problem. It's a shape problem.
-
-So a spec, by itself, doesn't carry the thing I actually need the agent
-to carry: *why any of this matters, and to whom*.
+Specs also drift, and that drift hits agents harder than it hits humans.
+A human catches a stale paragraph and mentally skips it. An agent reads
+every sentence as authoritative regardless of whether it still matches
+reality. But drift is a symptom, not the disease. Specs drift because
+implementation details change faster than anything else in a project.
+The higher up you write, the slower the document ages.
 
 ## What I'd rather give them
 
@@ -143,24 +142,33 @@ reasonable next move. Specs were invented to avoid needing it: the whole
 point of a spec was to move judgment out of the reader's hands and into
 the writer's, because the reader couldn't be trusted with it.
 
-This is where spec-cage believers and I part ways, and I want to be
-honest about what I'm claiming. The claim is that the current generation
-of coding agents can exercise judgment on an existing, scoped project
-well enough that providing a frame beats providing a cage. That's an
-empirical claim about 2026, not a philosophical one about agents in
-principle. If you've been burned by older agents that needed spec cages
-to produce anything coherent, the burn was real, and caging them was the
-right call at the time. What I'm saying is that for this narrow job,
-pushing an existing project forward one day at a time, the cage now
-costs more than it saves.
+That bet has already been settled at the implementation level. When
+someone types "build me a SaaS landing page with Stripe checkout" into
+Bolt, they aren't writing a spec. They're trusting the system to derive
+the implementation from the goal. And it works, millions of times a day,
+across every zero-shot agentic tool on the market. Nobody debates
+whether agents can exercise implementation judgment anymore. They just
+do it.
+
+The interesting question is what happens when you extend that trust from
+a throwaway prototype to a project that matters. A project with users
+who depend on specific behaviors. A project where "technically correct
+and quietly wrong" has real costs. The agent still has the judgment. What
+it lacks is the frame: who does this serve, what have we promised them,
+and what are we trying to accomplish this week?
+
+That's the gap this manifesto is about. Not whether agents can figure
+out *how* to build something, they obviously can, but whether anyone is
+telling them *why* and *for whom*.
 
 The cheapest way to check is to take the spec away from one of your
 agents, hand it the stakeholder prose, the claims, and a theme, and
 watch what happens for a week. That's how I figured it out. A week of
 honest trial will tell you whether the claim holds on your project.
 
-If it does, the writer's job is to provide the frame the reader needs in
-order to decide well.
+If it does, the writer's job stops being "decompose the goal into steps"
+and starts being "make the goal legible enough that the agent can
+decompose it on its own."
 
 ## This is a daily practice
 
@@ -202,14 +210,25 @@ That's the whole idea.
 
 ## A concrete implementation
 
+The pattern behind this manifesto is already in wide use. Every zero-shot
+agentic tool, Bolt, Lovable, Cursor, operates on the same principle:
+the user provides direction at the goal level, the system derives the
+implementation. What those tools don't do, because they're aimed at
+greenfield work, is carry the values forward across hundreds of cycles
+on a project that matters.
+
 I've been building a tool called [lathe](https://github.com/libliflin/lathe)
-that tries to put this into practice. It reads a project and writes an
-`agent.md` capturing the stakeholders and claims it finds there, then
-runs the cycle on its own, with an adversarial pass against its own
-claims every few iterations. It's early, and it's wrong in ways I haven't
-found yet, and that's part of why the manifesto came first. I wanted the
-idea to be legible on its own, before having to defend any particular
-implementation of it.
+that tries to close that gap. It reads a project and writes an `agent.md`
+capturing the stakeholders and claims it finds there, then runs the cycle
+on its own, with an adversarial pass against its own claims every few
+iterations. The goal isn't to replace the zero-shot tools. It's to bring
+the same principle, values-level direction with agent-derived
+implementation, to long-lived projects where someone has to care about
+the promises made to real users.
+
+It's early, and it's wrong in ways I haven't found yet, and that's part
+of why the manifesto came first. I wanted the idea to be legible on its
+own, before having to defend any particular implementation of it.
 
 If you want to see the idea with code attached, that's what lathe is for.
 If you want to argue with the idea itself, the
